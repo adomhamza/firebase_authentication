@@ -7,7 +7,7 @@ abstract class AuthBase {
   Future<UserCredential> signInWithGoogle();
   Future<User?> signInWithFaceBook();
   Stream<User?> authStateChanges();
-  // Future<void> signOut();
+  Future<void> signOut();
 }
 
 class Auth implements AuthBase {
@@ -74,5 +74,14 @@ class Auth implements AuthBase {
       default:
         throw UnimplementedError();
     }
+  }
+
+  @override
+  Future<void> signOut() async {
+    final googleSignIn = GoogleSignIn();
+    final faceBookSignIn = FacebookLogin();
+    await googleSignIn.signOut();
+    await faceBookSignIn.logOut();
+    await _firebaseAuth.signOut();
   }
 }
